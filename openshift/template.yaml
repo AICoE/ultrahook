@@ -32,7 +32,6 @@ objects:
       app: ultrahook
       deploymentconfig: ultrahook
     strategy:
-      resources: {}
       rollingParams:
         intervalSeconds: 1
         maxSurge: 25%
@@ -60,7 +59,9 @@ objects:
           ports:
           - containerPort: 8080
             protocol: TCP
-          resources: {}
+          resources:
+            limits:
+              memory: 50Mi
           terminationMessagePath: /dev/termination-log
         dnsPolicy: ClusterFirst
         restartPolicy: Always
