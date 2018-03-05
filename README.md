@@ -1,6 +1,6 @@
 # Ultrahook Client for OpenShift
 
-This repository contains s2i ready OpenShift application based on Ultrahook Client
+This repository contains [s2i](https://github.com/openshift/source-to-image) ready [OpenShift](https://www.openshift.com/) application based on [Ultrahook](http://www.ultrahook.com/) Client
 
 ## Usage
 
