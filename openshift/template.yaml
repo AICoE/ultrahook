@@ -1,0 +1,123 @@
+apiVersion: v1
+kind: Template
+metadata:
+  name: ultrahook
+objects:
+- apiVersion: v1
+  kind: Service
+  metadata:
+    labels:
+      app: ultrahook
+    name: ultrahook
+  spec:
+    ports:
+    - name: 8080-tcp
+      port: 8080
+      protocol: TCP
+      targetPort: 8080
+    selector:
+      app: ultrahook
+      deploymentconfig: ultrahook
+    sessionAffinity: None
+    type: ClusterIP
+- apiVersion: v1
+  kind: DeploymentConfig
+  metadata:
+    labels:
+      app: ultrahook
+    name: ultrahook
+  spec:
+    replicas: 1
+    selector:
+      app: ultrahook
+      deploymentconfig: ultrahook
+    strategy:
+      resources: {}
+      rollingParams:
+        intervalSeconds: 1
+        maxSurge: 25%
+        maxUnavailable: 25%
+        timeoutSeconds: 600
+        updatePeriodSeconds: 1
+      type: Rolling
+    template:
+      metadata:
+        labels:
+          app: ultrahook
+          deploymentconfig: ultrahook
+      spec:
+        containers:
+        - env:
+          - name: ULTRAHOOK_API_KEY
+            value: ${ULTRAHOOK_API_KEY}
+          - name: ULTRAHOOK_SUBDOMAIN
+            value: ${ULTRAHOOK_SUBDOMAIN}
+          - name: ULTRAHOOK_DESTINATION
+            value: ${ULTRAHOOK_DESTINATION}
+          image: 
+          imagePullPolicy: Always
+          name: ultrahook
+          ports:
+          - containerPort: 8080
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+    test: false
+    triggers:
+    - type: ConfigChange
+    - imageChangeParams:
+        automatic: true
+        containerNames:
+        - ultrahook
+        from:
+          kind: ImageStreamTag
+          name: ultrahook:latest
+      type: ImageChange
+- apiVersion: v1
+  kind: BuildConfig
+  metadata:
+    labels:
+      app: ultrahook
+    name: ultrahook
+  spec:
+    output:
+      to:
+        kind: ImageStreamTag
+        name: ultrahook:latest
+    source:
+      git:
+        uri: https://github.com/aicoe/ultrahook-openshift
+      type: Git
+    strategy:
+      sourceStrategy:
+        from:
+          kind: DockerImage
+          name: centos/ruby-24-centos7:latest
+      type: Source
+    triggers:
+    - github:
+        secret: fJpaN-HycWE6sj7vVINP
+      type: GitHub
+    - generic:
+        secret: Bf_M6qC-39fk03za7Uci
+      type: Generic
+    - type: ConfigChange
+    - imageChange: {}
+      type: ImageChange
+- apiVersion: v1
+  kind: ImageStream
+  metadata:
+    labels:
+      app: ultrahook
+    name: ultrahook
+  spec:
+    lookupPolicy:
+      local: true
+parameters:
+- name: ULTRAHOOK_API_KEY
+  required: true
+- name: ULTRAHOOK_SUBDOMAIN
+  required: true
+- name: ULTRAHOOK_DESTINATION
