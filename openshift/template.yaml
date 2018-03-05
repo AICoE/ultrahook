@@ -76,6 +76,15 @@ objects:
           name: ultrahook:latest
       type: ImageChange
 - apiVersion: v1
+  kind: ImageStream
+  metadata:
+    labels:
+      app: ultrahook
+    name: ultrahook
+  spec:
+    lookupPolicy:
+      local: true
+- apiVersion: v1
   kind: BuildConfig
   metadata:
     labels:
@@ -106,15 +115,6 @@ objects:
     - type: ConfigChange
     - imageChange: {}
       type: ImageChange
-- apiVersion: v1
-  kind: ImageStream
-  metadata:
-    labels:
-      app: ultrahook
-    name: ultrahook
-  spec:
-    lookupPolicy:
-      local: true
 parameters:
 - name: ULTRAHOOK_API_KEY
   required: true
