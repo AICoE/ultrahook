@@ -6,7 +6,7 @@ This repository contains [s2i](https://github.com/openshift/source-to-image) rea
 
 ### Deployment
 
-To import the template, run:
+To import the [template](openshift/template.yaml), run:
 
 ```
 oc apply -f openshift/template.yaml
