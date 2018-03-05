@@ -53,4 +53,3 @@ Run locally as:
 ```
 docker run --rm -it -e ULTRAHOOK_API_KEY=<your_api_key> -e ULTRAHOOK_SUBDOMAIN=<some_subdomain> -e ULTRAHOOK_DESTINATION=<destination_url> ultrahook
 ```
-
