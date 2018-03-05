@@ -1,5 +1,4 @@
-# ultrahook-openshift
-Ultrahook Client for OpenShift
+# Ultrahook Client for OpenShift
 
 This repository contains s2i ready OpenShift application based on Ultrahook Client
 
