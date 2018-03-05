@@ -1,0 +1,3 @@
+#!/usr/bin/bash
+
+ bundle/ruby/2.4.0/gems/ultrahook-0.1.4/bin/ultrahook $ULTRAHOOK_SUBDOMAIN $ULTRAHOOK_DESTINATION
