@@ -8,7 +8,8 @@ objects:
   metadata:
     labels:
       app: ultrahook
-    name: ultrahook
+      instance: ultrahook-${ULTRAHOOK_SUBDOMAIN}
+    name: ultrahook-${ULTRAHOOK_SUBDOMAIN}
   spec:
     ports:
     - name: 8080-tcp
@@ -17,7 +18,8 @@ objects:
       targetPort: 8080
     selector:
       app: ultrahook
-      deploymentconfig: ultrahook
+      instance: ultrahook-${ULTRAHOOK_SUBDOMAIN}
+      deploymentconfig: ultrahook-${ULTRAHOOK_SUBDOMAIN}
     sessionAffinity: None
     type: ClusterIP
 - apiVersion: v1
@@ -25,31 +27,37 @@ objects:
   metadata:
     labels:
       app: ultrahook
-    name: ultrahook
+      instance: ultrahook-${ULTRAHOOK_SUBDOMAIN}
+    name: ultrahook-${ULTRAHOOK_SUBDOMAIN}
   spec:
     replicas: 1
     selector:
       app: ultrahook
-      deploymentconfig: ultrahook
+      instance: ultrahook-${ULTRAHOOK_SUBDOMAIN}
+      deploymentconfig: ultrahook-${ULTRAHOOK_SUBDOMAIN}
     strategy:
       type: Recreate
     template:
       metadata:
         labels:
           app: ultrahook
-          deploymentconfig: ultrahook
+          instance: ultrahook-${ULTRAHOOK_SUBDOMAIN}
+          deploymentconfig: ultrahook-${ULTRAHOOK_SUBDOMAIN}
       spec:
         containers:
         - env:
           - name: ULTRAHOOK_API_KEY
-            value: ${ULTRAHOOK_API_KEY}
+            valueFrom:
+              secretKeyRef:
+                name: ultrahook
+                key: api.key
           - name: ULTRAHOOK_SUBDOMAIN
             value: ${ULTRAHOOK_SUBDOMAIN}
           - name: ULTRAHOOK_DESTINATION
             value: ${ULTRAHOOK_DESTINATION}
           image: 
           imagePullPolicy: Always
-          name: ultrahook
+          name: ultrahook-${ULTRAHOOK_SUBDOMAIN}
           ports:
           - containerPort: 8080
             protocol: TCP
@@ -65,7 +73,7 @@ objects:
     - imageChangeParams:
         automatic: true
         containerNames:
-        - ultrahook
+        - ultrahook-${ULTRAHOOK_SUBDOMAIN}
         from:
           kind: ImageStreamTag
           name: ultrahook:latest
@@ -111,8 +119,6 @@ objects:
     - imageChange: {}
       type: ImageChange
 parameters:
-- name: ULTRAHOOK_API_KEY
-  required: true
 - name: ULTRAHOOK_SUBDOMAIN
   required: true
 - name: ULTRAHOOK_DESTINATION

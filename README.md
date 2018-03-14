@@ -6,19 +6,27 @@ This repository contains [s2i](https://github.com/openshift/source-to-image) rea
 
 ### Deployment
 
-To import the [template](openshift/template.yaml), run:
+To import the [template](openshift/ultrahook.app.yaml), run:
 
 ```
-oc apply -f openshift/template.yaml
+oc apply -f openshift/ultrahook.app.yaml
+```
+
+To import API key [secret](openshift/ultrahook.secret.yaml), run:
+
+```
+oc process -f openshift/ultrahook.secret.yaml ULTRAHOOK_API_KEY=`echo -n "<your_api_key>" | base64` | oc apply -f -
 ```
 
 To deploy the ultrahook client, run:
 
 ```
-oc process ultrahook ULTRAHOOK_API_KEY=<your_api_key> ULTRAHOOK_SUBDOMAIN=<some_subdomain> ULTRAHOOK_DESTINATION=<destination_url> | oc apply -f -
+oc process ultrahook ULTRAHOOK_SUBDOMAIN=<some_subdomain> ULTRAHOOK_DESTINATION=<destination_url> | oc apply -f -
 ```
 
 Or you can do the same thing in OpenShift Console UI.
+
+You will find a new DeploymentConfig with name `ultrahook-<some_subdomain>`.
 
 ### Webhook Configuration
 
