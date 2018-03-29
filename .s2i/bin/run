@@ -3,4 +3,4 @@
 # Remove trailing slash(es)
 ULTRAHOOK_DESTINATION=$(echo ${ULTRAHOOK_DESTINATION} | sed 's#/*$##')
 
-exec bundle/ruby/2.4.0/gems/ultrahook-0.1.4/bin/ultrahook $ULTRAHOOK_SUBDOMAIN $ULTRAHOOK_DESTINATION
+exec bundle/ruby/2.4.0/gems/ultrahook-0.1.5/bin/ultrahook $ULTRAHOOK_SUBDOMAIN $ULTRAHOOK_DESTINATION
