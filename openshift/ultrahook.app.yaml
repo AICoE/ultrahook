@@ -100,7 +100,7 @@ objects:
         name: ultrahook:latest
     source:
       git:
-        uri: https://github.com/aicoe/ultrahook-openshift
+        uri: https://github.com/aicoe/ultrahook
       type: Git
     strategy:
       sourceStrategy:
