@@ -1,6 +1,11 @@
 #!/usr/bin/bash
+#set -ex
+bundle/ruby/2.4.0/gems/ultrahook-1.0.1/bin/ultrahook -V
+#echo "ULTRAHOOK_API_KEY=$ULTRAHOOK_API_KEY"
+echo "ULTRAHOOK_SUBDOMAIN=$ULTRAHOOK_SUBDOMAIN"
 
 # Remove trailing slash(es)
 ULTRAHOOK_DESTINATION=$(echo ${ULTRAHOOK_DESTINATION} | sed 's#/*$##')
+echo "ULTRAHOOK_DESTINATION=$ULTRAHOOK_DESTINATION"
 
-exec bundle/ruby/2.4.0/gems/ultrahook-0.1.5/bin/ultrahook $ULTRAHOOK_SUBDOMAIN $ULTRAHOOK_DESTINATION
+exec bundle/ruby/2.4.0/gems/ultrahook-1.0.1/bin/ultrahook -k $ULTRAHOOK_API_KEY $ULTRAHOOK_SUBDOMAIN $ULTRAHOOK_DESTINATION
